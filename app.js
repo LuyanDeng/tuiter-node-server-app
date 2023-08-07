@@ -1,23 +1,31 @@
 
 //const express = require('express');
-
+import cors from 'cors'
 import express from "express";
-
+import HelloController from "./controller/hello-controller.js";
+import UserController from "./users/user-controller.js";
+import TuitsController from "./controller/tuits/tuits-controller.js";
+import session from "express-session";
+import authController from "./users/auth-controller.js";
 const app =express();
 // mapping the URL pattern '/hello' to a function that handles the HTTP request
-app.get('/hello',(req,res)=>{
-    res.send('Life is good!')
-})
-app.get("/",(req,res)=>{
-    res.send('Welcome to Full Stack Development!')
-})
-//use get to define the HTTP method for the route.
-app.get("/add/:num1/:num2",(req,res)=>{
-    const num1 = parseInt(req.params.num1);
-    const num2 = parseInt(req.params.num2);
-    const sum =num2+num1;
-    res.json({sum:sum});
 
+app.use(cors({
+    credentials:true,
+    origin:"http://localhost:3000", // only accept info from this domain
+})); // configure cors right after instantiating express
+app.use(express.json());  // parse JSON from HTTP request body
+const sessionOptions = {
+    secret: "any string",
+    resave: false,
+    saveUninitialized: false,
+};
+TuitsController(app);
+HelloController(app);
+UserController(app);
+authController(app);
 
-})
+app.use(session(sessionOptions));
+const port = process.env.PORT || 4000
 app.listen(4000);
+//app.listen(port);
