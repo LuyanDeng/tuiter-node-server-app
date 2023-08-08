@@ -1,5 +1,6 @@
 
 //const express = require('express');
+import "dotenv/config";
 import cors from 'cors'
 import express from "express";
 import HelloController from "./controller/hello-controller.js";
@@ -12,7 +13,8 @@ const app =express();
 
 app.use(cors({
     credentials:true,
-    origin:"http://localhost:3000", // only accept info from this domain
+    origin: process.env.FRONTEND_URL
+   // origin:"http://localhost:3000", // only accept info from this domain
 })); // configure cors right after instantiating express
 app.use(express.json());  // parse JSON from HTTP request body
 const sessionOptions = {
@@ -20,12 +22,19 @@ const sessionOptions = {
     resave: false,
     saveUninitialized: false,
 };
-
+if (process.env.NODE_ENV !== "development") {
+    sessionOptions.proxy = true;
+    sessionOptions.cookie = {
+      sameSite: "none",
+      secure: true,
+    };
+  }
+  
 app.use(session(sessionOptions));
 TuitsController(app);
 HelloController(app);
 UserController(app);
 authController(app);
 const port = process.env.PORT || 4000
-app.listen(4000);
-//app.listen(port);
+//app.listen(4000);
+app.listen(port);
