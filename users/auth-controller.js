@@ -3,7 +3,7 @@ import * as usersDao from "./users-dao.js";
 
 
 const AuthController = (app) => {
-    let currentUser = null;
+    //let currentUser = null;
     const register = (req, res) => {
         //register API retrieves the username and password from the request body
         const username = req.body.username;
@@ -39,12 +39,11 @@ const AuthController = (app) => {
     };
     const profile  = (req, res) => {
         const currentUser =req.session["currentUser"];
-        if(!currentUser){
-            res.sendStatus(404);
-            return;
-        }
-        //If a user has already logged in,  retrieve the current user by using the profile API
-        res.json(currentUser);
+        if (currentUser) {
+            res.json(currentUser);
+          } else {
+            res.sendStatus(403);
+          }
     };
     const logout   = async (req, res) => {
         //logout users by destroying the session.
@@ -55,8 +54,62 @@ const AuthController = (app) => {
     const update   = (req, res) => { };
     app.post("/api/users/register", register);
     app.post("/api/users/login",    login);
-    app.post("/api/users/profile",  profile);
+    app.get("/api/users/profile",  profile);
     app.post("/api/users/logout",   logout);
     app.put ("/api/users",          update);
 }
 export default AuthController;
+
+// import people from "./authuser.js";
+// let users = people;
+
+// function AuthController(app) {
+//   const login = (req, res) => {
+//     const username = req.body.username;
+//     const password = req.body.password;
+//     if (username && password) {
+//       const user = users.find(
+//         (user) => user.username === username && user.password === password
+//       );
+//       if (user) {
+//         req.session["currentUser"] = user;
+//         res.json(user);
+//       } else {
+//         res.sendStatus(403);
+//       }
+//     } else {
+//       res.sendStatus(403);
+//     }
+//   };
+//   const register = (req, res) => {
+//     const user = users.find((user) => user.username === req.body.username);
+//     if (user) {
+//       res.sendStatus(403);
+//       return;
+//     }
+//     const newUser = { ...req.body, _id: new Date().getTime() + "" };
+//     users.push(newUser);
+//     req.session["currentUser"] = newUser;
+//     res.json(newUser);
+//   };
+//   const profile = (req, res) => {
+//     const currentUser = req.session["currentUser"];
+//     if (currentUser) {
+//       res.json(currentUser);
+//     } else {
+//       res.sendStatus(403);
+//     }
+//   };
+
+//   const logout = (req, res) => {
+//     req.session.destroy();
+//     res.sendStatus(200);
+//   };
+
+//   app.post("/api/users/login", login);
+//   app.post("/api/users/register", register);
+//   app.post("/api/users/profile", profile);
+//   app.post("/api/users/logout", logout);
+// }
+
+// export default AuthController;

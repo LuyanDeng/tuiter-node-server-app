@@ -20,12 +20,12 @@ const sessionOptions = {
     resave: false,
     saveUninitialized: false,
 };
+
+app.use(session(sessionOptions));
 TuitsController(app);
 HelloController(app);
 UserController(app);
 authController(app);
-
-app.use(session(sessionOptions));
 const port = process.env.PORT || 4000
 app.listen(4000);
 //app.listen(port);
