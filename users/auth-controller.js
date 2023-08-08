@@ -1,4 +1,4 @@
-// import * as usersDao from "./users-dao.js";
+ import * as usersDao from "./users-dao.js";
 
 
 
@@ -61,6 +61,7 @@
 // export default AuthController;
 
 import people from "./authuser.js";
+import { log } from "console";
 let users = people;
 
 function AuthController(app) {
@@ -95,6 +96,8 @@ function AuthController(app) {
   const profile = (req, res) => {
     const currentUser = req.session["currentUser"];
     if (currentUser) {
+        const cur = usersDao.findUserById(currentUser._id);
+        //console.log();
       res.json(currentUser);
     } else {
       res.sendStatus(403);
@@ -105,11 +108,17 @@ function AuthController(app) {
     req.session.destroy();
     res.sendStatus(200);
   };
+  const update   = (req, res) => {
+    const newUser = usersDao.updateUser(req.body._id, req.body);
+    req.session["currentUser"] = newUser;
+    res.sendStatus(200);
+    };
 
   app.post("/api/users/login", login);
   app.post("/api/users/register", register);
   app.post("/api/users/profile", profile);
   app.post("/api/users/logout", logout);
+  app.put ("/api/users",    update);
 }
 
 export default AuthController;
