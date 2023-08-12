@@ -10,12 +10,12 @@ import TuitsController from "./controller/tuits/tuits-controller.js";
 import session from "express-session";
 import authController from "./users/auth-controller.js";
 const CONNECTION_STRING = "mongodb+srv://deng41005:S5SF9dW20kbn4c4L@clusterwebdev.5ahyuxh.mongodb.net/?retryWrites=true&w=majority" || "mongodb://127.0.0.1:27017/tuiter";
-mongoose.connect(CONNECTION_STRING);
+mongoose.connect("mongodb+srv://deng41005:S5SF9dW20kbn4c4L@clusterwebdev.5ahyuxh.mongodb.net/?retryWrites=true&w=majority");
 const app =express();
 // mapping the URL pattern '/hello' to a function that handles the HTTP request
 
 app.use(cors({
-    credentials:true,
+    credentials:true,,
     //origin: ["https://a5--magical-frangipane-9b7455.netlify.app","http://localhost:3000"]
     origin:"http://localhost:3000", // only accept info from this domain
 })); // configure cors right after instantiating express
