@@ -15,7 +15,7 @@ const app =express();
 // mapping the URL pattern '/hello' to a function that handles the HTTP request
 
 app.use(cors({
-    credentials:true,,
+    credentials:true,
     //origin: ["https://a5--magical-frangipane-9b7455.netlify.app","http://localhost:3000"]
     origin:"http://localhost:3000", // only accept info from this domain
 })); // configure cors right after instantiating express
