@@ -2,13 +2,22 @@
 //let tuits =  posts;
 import * as tuitsDao from "./tuits-dao.js";
 const createTuit = async (req, res) => {
-    const newTuit = req.body;
+    const newTuit = {
+        ...req.body,
+        likes: 0,
+        liked: false,
+        dislikes: 0,
+        disliked: false,
+        retuits: 0,
+        replies: 0,
+        time: '1m'
+      };
     //newTuit._id = (new Date()).getTime()+'';
-    newTuit.likes = 0;
-    newTuit.liked = false;
+    //newTuit.likes = 0;
+    //newTuit.liked = false;
     //tuits.push(newTuit);
     const insertedTuit = await tuitsDao.createTuit(newTuit);
-    res.json(newTuit);
+    res.json(insertedTuit);
 }
 
 const deleteTuit = async (req, res) => {
