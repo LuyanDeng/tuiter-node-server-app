@@ -12,10 +12,10 @@ const createTuit = async (req, res) => {
 }
 
 const deleteTuit = async (req, res) => {
-    const tuitdIdToDelete = req.params.tid;
+    const tuitIdToDelete = req.params.tid;
     // tuits = tuits.filter((t) =>
     //     t._id !== tuitdIdToDelete);
-    const status = await tuitsDao.deleteTuit(tuitdIdToDelete);
+    const status = await tuitsDao.deleteTuit(tuitIdToDelete);
     res.sendStatus(status);
 }
 
