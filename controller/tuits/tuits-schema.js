@@ -11,7 +11,7 @@ const schema = mongoose.Schema({
     retuits: Number,
     likes: Number,
     handle: String,
-    Tuit: String,
+    tuit: String,
     
 
 },{collection : "tuits"});
