@@ -1,9 +1,10 @@
-import people from './users.js' // import the array of users.
+//import people from './users.js' // import the array of users.
 
-let users = people;
+//let users = people;
 // use express instance app to declare HTTP GET
+import * as usersDao from "./users-dao.js";
 const UserController = (app) => {
-    app.get("/api/users", findUsers)  // request pattern /api/users to call a function
+    app.get("/api/users", findAllUsers)  // request pattern /api/users to call a function
 
     app.get('/api/users/:_id', findUserById);
     app.post('/api/users', createUser);
@@ -12,35 +13,67 @@ const UserController = (app) => {
 
 
 }
-const findUserById = (req, res) => {
+const findAllUsers = async(req,res) => {
+    const username = req.query.username;
+    const password = req.query.password;
+    if (username && password) {
+        const user = await usersDao.findUserByCredentials(username, password);
+        if (user) {
+            res.json(user);
+        } else {
+            res.sendStatus(404);
+        }
+    } else if (username) {
+        const user = await usersDao.findUserByUsername(username);
+        if (user) {
+            res.json(user);
+        } else {
+            res.sendStatus(404);
+        }
+    } else {
+        const users = await usersDao.findAllUsers();
+        res.json(users);
+    }
+};
+
+const findUserById = async(req, res) => {
+
     const userId = req.params._id;
-    const user = users.find(u => u._id === userId);
+    const user = usersDao.findUserById(userId);
+    // const user = users.find(u => u._id === userId);
     res.json(user)
 //Try http://localhost:4000/api/users/123
 }
-const createUser = (req, res) => {
-    const newUser = req.body;
-    newUser._id = (new Date()).getTime() + '';
-    users.push(newUser);
+const createUser =async (req, res) => {
+    // const newUser = req.body;
+    // newUser._id = (new Date()).getTime() + '';
+    // users.push(newUser);
+    const newUser = await usersDao.createUser(req.body);
     res.json(newUser);
 
 }
-const deleteUser = (req,res)=> {
-    const userId = req.params['_id']; // get user ID from path parameter _id filter out the user
+const deleteUser = async (req,res)=> {
+   const userId = req.params['_id']; // get user ID from path parameter _id filter out the user
 
-    users = users.filter(usr => usr._id !== userId); // whose ID is the ID of the user we want to remove
+    //users = users.filter(usr => usr._id !== userId); // whose ID is the ID of the user we want to remove
 
-    res.sendStatus(200)
+    //res.sendStatus(200)
+   const status = usersDao.deleteUser(userId);
+   res.sendStatus(status);
 }
-const updateUser = (req, res) => {
+const updateUser = async (req, res) => {
     const userId = req.params['_id'];
-    const updates = req.body;
-    users = users.map((usr) =>
-        usr._id === userId ?
-            {...usr, ...updates} :
-            usr
-    );
-    res.sendStatus(200);
+    const status = await usersDao.updateUser(userId, req.body);
+    const user = await usersDao.findUserById(userId);
+    req.session['currentUser'] = user;
+    res.sendStatus(status);
+    // const updates = req.body;
+    // users = users.map((usr) =>
+    //     usr._id === userId ?
+    //         {...usr, ...updates} :
+    //         usr
+    // );
+    // res.sendStatus(200);
 }
 
 const findUsers = (req, res) => {  // function runs when /api/users requested
