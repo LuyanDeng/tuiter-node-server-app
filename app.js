@@ -16,7 +16,7 @@ const app =express();
 
 app.use(cors({
     credentials:true,
-    origin: ["https://a6--magical-frangipane-9b7455.netlify.app/","http://localhost:3000"]
+    origin: ["https://a6--magical-frangipane-9b7455.netlify.app","http://localhost:3000"]
     //origin:"http://localhost:3000", // only accept info from this domain
 })); // configure cors right after instantiating express
 app.use(express.json());  // parse JSON from HTTP request body
