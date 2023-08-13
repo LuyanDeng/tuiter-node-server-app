@@ -6,6 +6,12 @@ const schema = mongoose.Schema({
     title: String,
     time: String,
     image: String,
+    liked: Boolean,
+    replies: Number,
+    retuits: Number,
+    likes: Number,
+    handle: String,
+    Tuit: String,
     
 
 },{collection : "tuits"});
