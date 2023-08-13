@@ -60,9 +60,9 @@
 // }
 // export default AuthController;
 
-// import people from "./authuser.js";
+import people from "./authuser.js";
 // import { log } from "console";
-// let users = people;
+let users = people;
 
 function AuthController(app) {
   // const login = (req, res) => {
@@ -118,11 +118,11 @@ function AuthController(app) {
       res.sendStatus(403);
     }
   };
-  
-  const profile = (req, res) => {
+
+  const profile =  (req, res) => {
     const currentUser = req.session["currentUser"];
     if (currentUser) {
-        const cur = usersDao.findUserById(currentUser._id);
+        //const user = usersDao.findUserById(currentUser._id);
         //console.log();
       res.json(currentUser);
     } else {
