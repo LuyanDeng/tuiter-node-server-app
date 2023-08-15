@@ -94,7 +94,8 @@ function AuthController(app) {
   //   res.json(newUser);
   // };
   const register = async (req, res) => {
-    const user = await usersDao.findUserByUsername(req.body.username);
+    const username = req.body.username;
+    const user = await usersDao.findUserByUsername(username);
     if (user) {
       res.sendStatus(403);
       return;
