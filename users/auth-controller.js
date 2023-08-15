@@ -1,5 +1,5 @@
  import * as usersDao from "./users-dao.js";
-
+ //let currentUser;
 
 
 // const AuthController = (app) => {
@@ -60,9 +60,9 @@
 // }
 // export default AuthController;
 
-import people from "./authuser.js";
+//import people from "./authuser.js";
 // import { log } from "console";
-let users = people;
+//let users = people;
 
 function AuthController(app) {
   // const login = (req, res) => {
@@ -102,6 +102,7 @@ function AuthController(app) {
     }
     const newUser = await usersDao.createUser(req.body);
     req.session["currentUser"] = newUser;
+    //currentUser = newUser;
     res.json(newUser);
   };
   const login = async (req, res) => {
@@ -110,6 +111,7 @@ function AuthController(app) {
     if (username && password) {
       const user = await usersDao.findUserByCredentials(username, password);
       if (user) {
+        //currentUser = user;
         req.session["currentUser"] = user;
         res.json(user);
       } else {
@@ -121,6 +123,7 @@ function AuthController(app) {
   };
 
   const profile =  (req, res) => {
+    //const nowuser = currentUser;
     const currentUser = req.session["currentUser"];
     if (currentUser) {
         //const user = usersDao.findUserById(currentUser._id);
@@ -138,6 +141,7 @@ function AuthController(app) {
   const update   = (req, res) => {
     const newUser = usersDao.updateUser(req.body._id, req.body);
     req.session["currentUser"] = newUser;
+    //currentUser = newUser;
     res.sendStatus(200);
     };
 
