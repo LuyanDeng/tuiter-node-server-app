@@ -93,26 +93,46 @@ function AuthController(app) {
   //   req.session["currentUser"] = newUser;
   //   res.json(newUser);
   // };
+  // const register = async (req, res) => {
+  //   const username = req.body.username;
+  //   console.log(username);
+  //   const user = await usersDao.findUserByUsername(username);
+  //   console.log(user);
+  //   if (user) {
+  //     res.sendStatus(403);
+  //     return;
+  //   }
+  //   const newUser = await usersDao.createUser(req.body);
+  //   req.session["currentUser"] = newUser;
+    
+  //   res.json(newUser);
+  // };
+
   const register = async (req, res) => {
     const username = req.body.username;
+    console.log(username);
     const user = await usersDao.findUserByUsername(username);
+    
     if (user) {
       res.sendStatus(403);
       return;
     }
     const newUser = await usersDao.createUser(req.body);
+    console.log(newUser);
     req.session["currentUser"] = newUser;
-    //currentUser = newUser;
     res.json(newUser);
   };
+  
   const login = async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
     if (username && password) {
       const user = await usersDao.findUserByCredentials(username, password);
+      console.log(user);
       if (user) {
         //currentUser = user;
         req.session["currentUser"] = user;
+        console.log(user);
         res.json(user);
       } else {
         res.sendStatus(403);
@@ -139,10 +159,10 @@ function AuthController(app) {
     res.sendStatus(200);
   };
   const update   = (req, res) => {
-    const newUser = usersDao.updateUser(req.body._id, req.body);
-    req.session["currentUser"] = newUser;
-    //currentUser = newUser;
-    res.sendStatus(200);
+    // const newUser = usersDao.updateUser(req.body._id, req.body);
+    // req.session["currentUser"] = newUser;
+    // //currentUser = newUser;
+    // res.sendStatus(200);
     };
 
   app.post("/api/users/login", login);
@@ -150,6 +170,6 @@ function AuthController(app) {
   app.post("/api/users/profile", profile);
   app.post("/api/users/logout", logout);
   app.put ("/api/users",    update);
-}
 
+  }
 export default AuthController;

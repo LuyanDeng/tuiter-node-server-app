@@ -53,7 +53,7 @@ const createUser =async (req, res) => {
 
 }
 const deleteUser = async (req,res)=> {
-   const userId = req.params.id; // get user ID from path parameter _id filter out the user
+   const userId = req.params._id; // get user ID from path parameter _id filter out the user
 
     //users = users.filter(usr => usr._id !== userId); // whose ID is the ID of the user we want to remove
 
@@ -62,10 +62,13 @@ const deleteUser = async (req,res)=> {
    //res.sendStatus(status);
    res.json(status);
 }
+
 const updateUser = async (req, res) => {
-    const userId = req.params.id;
+    const userId = req.params._id; // change here
     const status = await usersDao.updateUser(userId, req.body);
-   
+    const user = await usersDao.findUserById(userId);
+    req.session["currentUser"] = user;
+   // res.json(user);
     
     //res.sendStatus(status);
     res.json(status);
