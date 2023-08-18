@@ -16,8 +16,10 @@ const app =express();
 
 app.use(cors({
     credentials:true,
+
     origin: ["https://a6--magical-frangipane-9b7455.netlify.app","http://localhost:3000"]
    //origin:"http://localhost:3000", // only accept info from this domain
+
 })); // configure cors right after instantiating express
 
 const sessionOptions = {
@@ -25,13 +27,13 @@ const sessionOptions = {
     resave: false,
     saveUninitialized: false,
 };
-if (process.env.NODE_ENV !== "development") {
-    sessionOptions.proxy = true;
-    sessionOptions.cookie = {
-      sameSite: "none",
-      secure: true,
-    };
-  }
+// if (process.env.NODE_ENV !== "development") {
+//     sessionOptions.proxy = true;
+//     sessionOptions.cookie = {
+//       sameSite: "none",
+//       secure: true,
+//     };
+//   }
   
 app.use(session(sessionOptions));
 app.use(express.json()); // parse JSON body
